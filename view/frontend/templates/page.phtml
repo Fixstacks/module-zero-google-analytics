@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * This page's GA4 events (`page_type` from the layout handle), as JSON at
+ * the end of the body, after the content has loaded its product lists.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Zero\GoogleAnalytics\ViewModel\Tracker $tracker
+ */
+$tracker = $block->getData('tracker');
+if (!$tracker->isActive()) {
+    return;
+}
+$events = $tracker->pageEvents((string) $block->getData('page_type'), $block);
+if (!$events) {
+    return;
+}
+?>
+<script type="application/json" data-zero-ga-events><?= /* @noEscape */ json_encode($events, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>

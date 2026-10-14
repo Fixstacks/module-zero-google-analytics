@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+    Copyright © 2026 Roman Pasichnyk
+    SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+
+    Events that happen in a POST wait in the session (Model\EventQueue) until
+    the next page fetches them.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_product_add_after">
+        <observer name="zero_ga_add_to_cart" instance="Zero\GoogleAnalytics\Observer\AddToCart"/>
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="zero_ga_remove_from_cart" instance="Zero\GoogleAnalytics\Observer\RemoveFromCart"/>
+    </event>
+    <event name="wishlist_add_product">
+        <observer name="zero_ga_add_to_wishlist" instance="Zero\GoogleAnalytics\Observer\AddToWishlist"/>
+    </event>
+    <event name="customer_login">
+        <observer name="zero_ga_login" instance="Zero\GoogleAnalytics\Observer\Login"/>
+    </event>
+    <event name="customer_register_success">
+        <observer name="zero_ga_sign_up" instance="Zero\GoogleAnalytics\Observer\SignUp"/>
+    </event>
+</config>

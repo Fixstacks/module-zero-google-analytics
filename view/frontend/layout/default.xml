@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+    Copyright © 2026 Roman Pasichnyk
+    SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+
+    Every page: settings + analytics.js (head). The consent banner is
+    Zero_Consent's (Model\ConsentTracker puts Google Analytics in it).
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block name="zero.ga.head" template="Zero_GoogleAnalytics::head.phtml">
+                <arguments>
+                    <argument name="tracker" xsi:type="object">Zero\GoogleAnalytics\ViewModel\Tracker</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

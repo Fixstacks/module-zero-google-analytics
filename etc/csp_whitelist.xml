@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * Hosts Google's tag (gtag.js / GTM) loads from and sends to, per Google's
+ * CSP guide for Google Analytics 4 and Google Ads.
+ */
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="zero-ga-gtm" type="host">https://*.googletagmanager.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="zero-ga-analytics" type="host">https://*.google-analytics.com</value>
+                <value id="zero-ga-gtm" type="host">https://*.googletagmanager.com</value>
+                <value id="zero-ga-doubleclick" type="host">https://*.g.doubleclick.net</value>
+                <value id="zero-ga-google" type="host">https://*.google.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="zero-ga-analytics" type="host">https://*.google-analytics.com</value>
+                <value id="zero-ga-analytics-google" type="host">https://*.analytics.google.com</value>
+                <value id="zero-ga-gtm" type="host">https://*.googletagmanager.com</value>
+                <value id="zero-ga-doubleclick" type="host">https://*.g.doubleclick.net</value>
+                <value id="zero-ga-google" type="host">https://*.google.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="zero-ga-gtm" type="host">https://*.googletagmanager.com</value>
+                <value id="zero-ga-doubleclick" type="host">https://td.doubleclick.net</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

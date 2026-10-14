@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © 2026 Roman Pasichnyk
+ * SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+ *
+ * Settings for web/js/analytics.js, as JSON (the storefront's CSP allows no
+ * inline scripts). The script itself loads Google's tag after setting the
+ * Consent Mode defaults.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Zero\GoogleAnalytics\ViewModel\Tracker $tracker
+ */
+$tracker = $block->getData('tracker');
+if (!$tracker->isActive()) {
+    return;
+}
+?>
+<script type="application/json" id="zero-ga-settings"><?= /* @noEscape */ json_encode($tracker->settings(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES) ?></script>
+<script src="<?= $escaper->escapeUrl($block->getViewFileUrl('Zero_GoogleAnalytics::js/analytics.js')) ?>" defer></script>

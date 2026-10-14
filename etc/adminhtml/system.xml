@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+    Copyright © 2026 Roman Pasichnyk
+    SPDX-License-Identifier: OSL-3.0 OR AFL-3.0
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="zero_google_analytics" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Google Analytics</label>
+            <tab>zero</tab>
+            <resource>Zero_GoogleAnalytics::config</resource>
+            <group id="general" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Google Analytics</label>
+                <comment>GA4 e-commerce events on the Zero storefront: item lists, product views, cart, checkout steps, purchase, search, sign in and sign up. Magento's own Google Analytics/Gtag modules use RequireJS and send nothing on Zero pages; turn them off if you use this one.</comment>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send With</label>
+                    <comment>GA4 directly: gtag.js with your Measurement ID. Google Tag Manager: the same events go to the dataLayer in GA4 e-commerce format; your container decides where they go (GA4, Ads, others).</comment>
+                    <source_model>Zero\GoogleAnalytics\Model\Config\Source\Mode</source_model>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+                <field id="measurement_id" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>GA4 Measurement ID</label>
+                    <comment>G-XXXXXXXXXX. Empty: the one in Sales > Google API > Google Analytics (Magento's own setting) is used.</comment>
+                    <depends><field id="enabled">1</field><field id="mode">gtag</field></depends>
+                </field>
+                <field id="container_id" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>GTM Container ID</label>
+                    <comment>GTM-XXXXXXX. Tags in the container that load other hosts (or Custom HTML) need those hosts in the store's CSP.</comment>
+                    <depends><field id="enabled">1</field><field id="mode">gtm</field></depends>
+                </field>
+                <field id="debug" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Debug Mode</label>
+                    <comment>Events show in GA4's DebugView and are logged in the browser console. Turn off on a live store.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+            </group>
+            <group id="consent" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Consent (Google Consent Mode v2)</label>
+                <comment>Google's analytics and advertising storage follow the visitor's choice of cookies (Zero > Cookie Consent: the banner, Global Privacy Control, Do Not Sell or Share). Google requires Consent Mode v2 for visitors from the EEA and the UK.</comment>
+                <field id="mode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Before Consent</label>
+                    <comment>Advanced: Google's tag loads at once and sends cookieless pings until consent (GA4 models the rest). Basic: nothing from Google loads until the visitor accepts.</comment>
+                    <source_model>Zero\GoogleAnalytics\Model\Config\Source\ConsentMode</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
