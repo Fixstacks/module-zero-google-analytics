@@ -10,6 +10,10 @@
  * 3. Events: the page's own from [data-zero-ga-events], select_item and
  *    checkout choices on click, and POST ones (add_to_cart, login, ...) from
  *    zero/analytics/events when the zero_ga_events cookie says so. All queued.
+ * 4. Every event is also dispatched as `zero:analytics` ({ name, params })
+ *    and kept in window.zeroAnalytics, for other trackers (Zero_MarketingPixels).
+ *    Without a Google ID (Google Analytics off) no Google tag loads: the
+ *    events run for those trackers only.
  */
 (function () {
     'use strict';
@@ -22,6 +26,7 @@
     var PURCHASES_KEY = 'zero-ga-purchases';
     var ECOMMERCE = ['view_item_list', 'select_item', 'view_item', 'add_to_cart', 'remove_from_cart', 'add_to_wishlist',
         'view_cart', 'begin_checkout', 'add_shipping_info', 'add_payment_info', 'purchase'];
+    var google = !!settings.id;
     var basic = settings.consentMode === 'basic';
     var loaded = false;
     // Basic consent mode: Google's commands wait here until its tag loads, so
@@ -100,7 +105,7 @@
     // Advanced consent mode: right away, cookieless pings until consent.
     // Basic: only once the visitor has agreed to analytics or marketing.
     function loadTag() {
-        if (loaded) {
+        if (loaded || !google) {
             return;
         }
         loaded = true;
@@ -128,8 +133,19 @@
 
     /* ---------- events ---------- */
 
+    // Other trackers: the events so far, then each new one as `zero:analytics`.
+    var history = window.zeroAnalytics = window.zeroAnalytics || [];
+    function share(name, params) {
+        history.push({ name: name, params: params });
+        document.dispatchEvent(new CustomEvent('zero:analytics', { detail: { name: name, params: params } }));
+    }
+
     function send(name, params) {
         params = params || {};
+        share(name, params);
+        if (!google) {
+            return;
+        }
         if (settings.mode === 'gtm') {
             if (ECOMMERCE.indexOf(name) !== -1) {
                 queue({ ecommerce: null });

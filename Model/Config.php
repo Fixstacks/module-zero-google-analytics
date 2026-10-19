@@ -10,6 +10,7 @@ namespace Zero\GoogleAnalytics\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
+use Zero\GoogleAnalytics\Api\EventListenerInterface;
 
 /**
  * Stores > Configuration > Zero > Google Analytics, for the current store view.
@@ -20,9 +21,31 @@ class Config
     /** Magento's own GA4 setting (Magento_GoogleGtag), used when ours is empty. */
     private const MAGENTO_MEASUREMENT_ID = 'google/gtag/analytics4/measurement_id';
 
+    /**
+     * @param EventListenerInterface[] $listeners other trackers using the events (di.xml)
+     */
     public function __construct(
-        private readonly ScopeConfigInterface $scopeConfig
+        private readonly ScopeConfigInterface $scopeConfig,
+        private readonly array $listeners = []
     ) {
+    }
+
+    /**
+     * The storefront collects e-commerce events: for Google's tag, or for
+     * another tracker using them (Api\EventListenerInterface).
+     */
+    public function collectsEvents(): bool
+    {
+        if ($this->isActive()) {
+            return true;
+        }
+        foreach ($this->listeners as $listener) {
+            if ($listener instanceof EventListenerInterface && $listener->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

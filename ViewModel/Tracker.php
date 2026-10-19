@@ -45,9 +45,10 @@ class Tracker implements ArgumentInterface
     ) {
     }
 
+    /** analytics.js runs: for Google's tag or for another tracker using the events. */
     public function isActive(): bool
     {
-        return $this->config->isActive();
+        return $this->config->collectsEvents();
     }
 
     /**
@@ -59,7 +60,8 @@ class Tracker implements ArgumentInterface
     {
         return [
             'mode' => $this->config->mode(),
-            'id' => $this->config->tagId(),
+            // '' when Google Analytics is off: the events run for the other trackers only.
+            'id' => $this->config->isActive() ? $this->config->tagId() : '',
             'debug' => $this->config->isDebug(),
             'consentMode' => $this->config->consentMode(),
             'currency' => $this->currency(),

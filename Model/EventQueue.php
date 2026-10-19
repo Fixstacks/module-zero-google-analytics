@@ -37,7 +37,7 @@ class EventQueue
      */
     public function add(string $name, array $params = []): void
     {
-        if (!$this->config->isActive()) {
+        if (!$this->config->collectsEvents()) {
             return;
         }
         $events = (array) $this->session->getData(self::SESSION_KEY);
