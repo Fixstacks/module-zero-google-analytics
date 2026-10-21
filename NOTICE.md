@@ -1,4 +1,4 @@
-# fixstacks/module-zero-google-analytics — licensing
+# zerofront/module-zero-google-analytics — licensing
 
 Copyright © 2026 Roman Pasichnyk.
 
